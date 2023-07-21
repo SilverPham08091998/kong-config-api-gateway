@@ -8,8 +8,8 @@ consumers:
         ttl: 0
 
 # Cấu hình các plugins
-
 plugins:
+  # Cấu hình authenciation gateway
   - name: key-auth
     service: mobile-api
     route: mobile-shopping-api
@@ -26,6 +26,7 @@ plugins:
     protocols:
       - http
       - https
+  # Cấu hình cache của request response
   - name: proxy-cache
     enabled: true
     protocols:
@@ -48,18 +49,17 @@ plugins:
           - text/plain
           - application/json
         ignore_uri_case: false
+  # Cấu hình rate-limit của request
   - name: rate-limiting
     enabled: true
     protocols:
-      - grpc
-      - grpcs
       - http
       - https
     config:
       redis_timeout: 2000
       redis_host:
       path:
-      hide_client_headers: false
+      hide_client_headers: true
       redis_server_name:
       redis_ssl_verify: false
       redis_username:
@@ -79,11 +79,12 @@ plugins:
       month:
       year:
       redis_ssl: false
+  # Cấu hình chặn các IP address bên phía client
   - name: ip-restriction
     enabled: true
     protocols:
-    - http
-    - https
+      - http
+      - https
     config:
       message:
       status:
@@ -91,6 +92,51 @@ plugins:
         - 127.0.0.0
       deny:
         - 127.0.0.1
+  # Cấu hình điều khiển các Consumer được truy cập vào service
+  - name: acl
+    enabled: true
+    protocols:
+      - http
+      - https
+    config:
+      hide_groups_header: false
+      deny:
+      allow:
+        - SilverPham
+  # Cấu hình prometheus monitoring
+  - name: prometheus
+    enabled: true
+    protocols:
+      - http
+      - https
+    config:
+      bandwidth_metrics: true
+      status_code_metrics: true
+      per_consumer: true
+      upstream_health_metrics: true
+      latency_metrics: true
+  # Cấu hình file ghi log
+  - name: file-log
+    enabled: true
+    protocols:
+      - http
+      - https
+    config:
+      path: "/log/kong/tmp/file.log"
+      reopen: false
+  - name: tcp-log
+    enabled: true
+    protocols:
+      - http
+      - https
+    config:
+      host: "logstash"
+      port: 5000
+      timeout: 10000
+      keepalive: 60000
+      tls: false
+
+
 
 
 upstreams:
@@ -188,7 +234,7 @@ services:
         strip_path: false
         preserve_host: false
         plugins:
-          - name : key-auth
+          - name: key-auth
   - name: product-service
     host: localhost
     connect_timeout: 60000

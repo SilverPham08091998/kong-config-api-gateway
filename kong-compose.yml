@@ -1,5 +1,5 @@
 # Default Kong
-version: '3.3.0.0'
+version: '1.0'
 networks:
   kong-net:
     driver: bridge
