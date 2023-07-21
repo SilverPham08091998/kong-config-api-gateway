@@ -26,6 +26,72 @@ plugins:
     protocols:
       - http
       - https
+  - name: proxy-cache
+    enabled: true
+    protocols:
+      - grpc
+      - grpcs
+      - http
+      - https
+    config:
+      storage_ttl:
+        cache_control: false
+        response_code:
+          - 200
+        strategy: memory
+        cache_ttl: 300
+        memory:
+          dictionary_name: kong_db_cache
+        request_method:
+          - GET
+        content_type:
+          - text/plain
+          - application/json
+        ignore_uri_case: false
+  - name: rate-limiting
+    enabled: true
+    protocols:
+      - grpc
+      - grpcs
+      - http
+      - https
+    config:
+      redis_timeout: 2000
+      redis_host:
+      path:
+      hide_client_headers: false
+      redis_server_name:
+      redis_ssl_verify: false
+      redis_username:
+      limit_by: consumer
+      redis_port: 6379
+      redis_database: 0
+      policy: local
+      second:
+      error_message: API rate limit exceeded
+      error_code: 429
+      header_name:
+      redis_password:
+      fault_tolerant: true
+      minute: 20
+      hour:
+      day:
+      month:
+      year:
+      redis_ssl: false
+  - name: ip-restriction
+    enabled: true
+    protocols:
+    - http
+    - https
+    config:
+      message:
+      status:
+      allow:
+        - 127.0.0.0
+      deny:
+        - 127.0.0.1
+
 
 upstreams:
   - name: mobile-shopping-api
