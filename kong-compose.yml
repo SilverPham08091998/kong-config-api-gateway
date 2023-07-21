@@ -1,0 +1,36 @@
+# Default Kong
+version: '3.3.0.0'
+networks:
+  kong-net:
+    driver: bridge
+services:
+  kong:
+    image: kong:latest
+    container_name: kong-container
+    environment:
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_PROXY_LISTEN: 0.0.0.0:8000,0.0.0.0:8444 ssl
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001,0.0.0.0:8443 ssl
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
+      KONG_DATABASE: off
+      KONG_ADMIN_GUI_URL: 127.0.0.1:8002
+      KONG_ADMIN_GUI_PATH: /
+    networks:
+      - kong-net
+    ports:
+      - "0.0.0.0:8000:8000/tcp"
+      - "0.0.0.0:8443:8443/tcp"
+      - "127.0.0.1:8001:8001/tcp"
+      - "127.0.0.1:8444:8444/tcp"
+      - "127.0.0.1:8002:8002/tcp"
+    healthcheck:
+      test: [ "CMD", "kong", "health" ]
+      interval: 10s
+      timeout: 10s
+      retries: 1
+    restart: always
+    volumes:
+      - ./compose/kong/declarative:/usr/local/kong/declarative
