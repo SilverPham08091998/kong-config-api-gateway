@@ -130,15 +130,21 @@ plugins:
       - http
       - https
     config:
-      host: "logstash"
-      port: 5000
+      host: "10.91.10.38" # địa chỉ của host logstash: 10.91.10.38
+      port: 9301 # port đưa ra ngoài của docker
       timeout: 10000
       keepalive: 60000
       tls: false
-
-
-
-
+  - name: pre-function
+    enabled: true
+    protocols:
+      - http
+      - https
+    config:
+      access:
+        - kong.log.set_serialize_value("request.body", kong.request.get_raw_body())
+      body_filter:
+        - kong.log.set_serialize_value("response.body", kong.response.get_raw_body())
 upstreams:
   - name: mobile-shopping-api
     hash_on_cookie_path: "/"

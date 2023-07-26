@@ -10,10 +10,10 @@ services:
     environment:
       KONG_ADMIN_ACCESS_LOG: /dev/stdout
       KONG_ADMIN_ERROR_LOG: /dev/stderr
-      KONG_PROXY_LISTEN: 0.0.0.0:8000,0.0.0.0:8444 ssl
       KONG_ADMIN_LISTEN: 0.0.0.0:8001,0.0.0.0:8443 ssl
       KONG_PROXY_ACCESS_LOG: /dev/stdout
       KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_PROXY_LISTEN: 0.0.0.0:8000,0.0.0.0:8444 ssl
       KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
       KONG_DATABASE: off
       KONG_ADMIN_GUI_URL: 127.0.0.1:8002
@@ -34,3 +34,7 @@ services:
     restart: always
     volumes:
       - ./compose/kong/declarative:/usr/local/kong/declarative
+      - ./compose/kong/config/nginx.conf:/usr/local/kong/nginx.conf
+      - ./compose/kong/config/nginx-kong.conf:/usr/local/kong/nginx-kong.conf
+      - ./compose/kong/logs:/usr/local/kong/logs
+      - ./compose/kong/logs/log.txt:/usr/local/kong/logs/log.txt

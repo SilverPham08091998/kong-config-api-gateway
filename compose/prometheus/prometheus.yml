@@ -6,4 +6,4 @@ scrape_configs:
   - job_name: 'kong'
     metrics_path: '/metrics'
     static_configs:
-      - targets: [ '192.168.2.14:8001' ] # Địa chỉ Kong Admin API
+      - targets: [ '10.91.10.38:8001' ] # Địa chỉ Kong Admin API
