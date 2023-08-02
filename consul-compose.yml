@@ -1,0 +1,13 @@
+version: '1.0'
+services:
+  consul-server:
+    container_name: consul-server
+    image: consul:1.15.4
+    ports:
+      - "8500:8500"
+    command: 'agent -server -bootstrap-expect=1 -ui -bind=0.0.0.0 -client=0.0.0.0'
+    networks:
+      - consul-network
+networks:
+  consul-network:
+    driver: bridge
