@@ -9,7 +9,5 @@ scrape_configs:
       - targets: [ '10.91.10.38:8001' ] # Địa chỉ Kong Admin API
   - job_name: 'user-service'
     metrics_path: '/actuator/prometheus'
-    scrape_interval: 15s
-    scrape_timeout: 10s
     static_configs:
       - targets: [ '10.91.10.38:9012' ]
