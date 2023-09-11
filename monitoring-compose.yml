@@ -7,6 +7,10 @@ services:
       - "9090:9090"
     volumes:
       - ./compose/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    env_file:
+      - .env
+    environment:
+      HOST: ${HOST}
 
   grafana:
     image: grafana/grafana
