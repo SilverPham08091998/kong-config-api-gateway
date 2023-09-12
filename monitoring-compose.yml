@@ -10,7 +10,8 @@ services:
     env_file:
       - .env
     environment:
-      HOST: ${HOST}
+      PROMETHEUS_TARGET_KONG: ${HOST}:8001
+      PROMETHEUS_TARGET_USER_SERVICE: ${HOST}:9012
 
   grafana:
     image: grafana/grafana
