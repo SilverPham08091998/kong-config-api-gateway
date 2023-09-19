@@ -11,3 +11,7 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ '10.91.10.38:9012' ]
+  - job_name: 'otp-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ '10.91.10.38:9007' ]
