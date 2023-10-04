@@ -1,5 +1,5 @@
 network.host: 0.0.0.0
 http.port: 9200
-cluster.name: my-elasticsearch-cluster
-node.name: my-elasticsearch-node
+cluster.name: shopping-app-elasticsearch-cluster
+node.name: shopping-app-elasticsearch-node
 xpack.security.enabled: false
